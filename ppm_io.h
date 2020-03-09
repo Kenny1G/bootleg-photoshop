@@ -1,8 +1,8 @@
-
-// __Add your name and JHED above__
-// ppm_io.h
-// 601.220, Spring 2019
-// Starter code for midterm project - feel free to edit/add to this file
+/* Victoria Subritzky Katz vsubrit1
+ * Kenneth Oseleononmen koseleo1 
+ * ppm_io.h
+ * 601.220, Spring 2020
+ */
 
 
 #ifndef PPM_IO_H
