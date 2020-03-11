@@ -9,6 +9,7 @@
 #define PROJECT_H_
 
 #include <stdio.h>
+#include "error.h"
 
 typedef enum _command {
 	com_exposure,

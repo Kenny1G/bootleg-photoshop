@@ -5,6 +5,7 @@
  */
 
 #include "error.h"
+#include <stdio.h>
 
 int handle_error(Error error)
 {
@@ -38,6 +39,6 @@ int handle_error(Error error)
 		default:
 			printf("unknown error type");
 			break;
-		return error;
    }
+	return error;
 }

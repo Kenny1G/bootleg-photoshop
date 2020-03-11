@@ -8,6 +8,10 @@
 #include "project.h"
 #include "ppm_io.h"
 #include "error.h"
+#include <stdlib.h>
+#include <string.h>
+
+
 
 int main(int argc, char **argv)
 {
@@ -42,7 +46,7 @@ Error parse_args(int argc, char **argv, Config *config)
 
 	const char* user_command = argv[3];
 
-	if (user_command == "blend") {
+	if (strcmp(user_command, "blend") == 0) {
 		config->command = com_blend;
 		if ((argc - 4) != 2) {
 			return er_insuff_args;
@@ -56,8 +60,8 @@ Error parse_args(int argc, char **argv, Config *config)
 			return er_args_out_of_range;
 		}
 	}
-	else if (user_command == "exposure") {
-		config->command == com_exposure;
+	else if (strcmp(user_command, "exposure") == 0) {
+		config->command = com_exposure;
 		if ((argc - 4) != 1) {
 			return er_insuff_args;
 		}
@@ -67,26 +71,26 @@ Error parse_args(int argc, char **argv, Config *config)
 			return er_args_out_of_range;
 		}
 	}
-	else if (user_command == "zoom_in") {
-		config->command == com_zoom_in;
+	else if (strcmp(user_command, "zoom_in") == 0) {
+		config->command = com_zoom_in;
 		if ((argc - 4) != 0) {
 			return er_insuff_args;
 		}
 	}
-	else if (user_command == "zoom_out") {
-		config->command == com_zoom_out;
+	else if (strcmp(user_command, "zoom_out") == 0) {
+		config->command = com_zoom_out;
 		if ((argc - 4) != 0) {
 			return er_insuff_args;
 		}
 	}
-	else if (user_command == "pointilism") {
-		config->command == com_pointilism;
+	else if (strcmp(user_command, "pointilism") == 0) {
+		config->command = com_pointilism;
 		if ((argc - 4) != 0) {
 			return er_insuff_args;
 		}
 	}
-	else if (user_command == "swirl") {
-		config->command == com_swirl;
+	else if (strcmp(user_command, "swirl") == 0) {
+		config->command = com_swirl;
 		if ((argc - 4) != 3) {
 			return er_insuff_args;
 		}
@@ -95,8 +99,8 @@ Error parse_args(int argc, char **argv, Config *config)
 			config->swirl_args[i] = atoi(argv[i+4]);
 		}
 	}
-	else if (user_command == "blur") {
-		config->command == com_blur;
+	else if (strcmp(user_command, "blur") == 0) {
+		config->command = com_blur;
 		if ((argc - 4) != 1) {
 			return er_insuff_args;
 		}
@@ -110,5 +114,5 @@ Error parse_args(int argc, char **argv, Config *config)
 }
 
 
-Error init(Config *config)
-{}
+// Error init(Config *config)
+// {}
