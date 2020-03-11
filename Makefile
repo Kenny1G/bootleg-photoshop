@@ -31,4 +31,4 @@ error.o: error.c error.h
 	$(CC) $(CFLAGS) -c error.c
 
 clean:
-	rm -f *.o demo
+	rm -f *.o demo project
