@@ -9,6 +9,7 @@
 #include "ppm_io.h"
 #include "error.h"
 #include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
 
 
@@ -54,7 +55,7 @@ Error parse_args(int argc, char **argv, Config *config)
 		
 		//TODO: maybe make a check for this too?
 		config->extra_file_name = argv[4];
-
+		
 		config->effect_range = atof(argv[5]);
 		if (config->effect_range < 0 || config->effect_range > 1) {
 			return er_args_out_of_range;
@@ -66,7 +67,7 @@ Error parse_args(int argc, char **argv, Config *config)
 			return er_insuff_args;
 		}
 
-		config->effect_range = atof(argv[5]);
+		config->effect_range = atof(argv[4]);
 		if (config->effect_range < -3 || config->effect_range > 3) {
 			return er_args_out_of_range;
 		}
