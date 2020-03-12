@@ -1,3 +1,5 @@
 *.o
 project
+project_test
+*.ppm
 

@@ -18,6 +18,12 @@ project: project.o blur.o imageManip.o ppm_io.o error.o
 project.o: project.c project.h blur.h imageManip.h ppm_io.h error.h
 	$(CC) $(CFLAGS) -c project.c
 
+project_test: project_test.o blur.o imageManip.o ppm_io.o error.o
+	$(CC) project_test.o blur.o imageManip.o ppm_io.o error.o -o project_test
+
+project_test.o: project_test.c blur.h imageManip.h ppm_io.h project.h error.h
+	$(CC) $(CFLAGS) -c project_test.c
+
 blur.o: blur.c blur.h error.h
 	$(CC) $(CFLAGS) -c blur.c
 
@@ -31,4 +37,4 @@ error.o: error.c error.h
 	$(CC) $(CFLAGS) -c error.c
 
 clean:
-	rm -f *.o demo project
+	rm -f *.o demo project project_test

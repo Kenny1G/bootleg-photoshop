@@ -35,9 +35,9 @@ int main() {
   for (int r = 0; r < im->rows; r++) {
     for (int c = 0; c < im->cols; c++) {
       if ((r + c) % 8 != 0) { 
-	im->data[(r * im->cols) + c] = my_color;
+			im->data[(r * im->cols) + c] = my_color;
       } else {
-	im->data[(r * im->cols) + c] = white;
+			im->data[(r * im->cols) + c] = white;
       }
     }
   }
