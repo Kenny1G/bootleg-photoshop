@@ -19,7 +19,7 @@ int handle_error(Error error)
 		case er_open_input_file_failed:
 			printf("Specified input file could not be opened\n");
 			break;
-		case er_bad_filename:
+		case er_bad_file:
 			printf("Specified input file is not a properly-formatted PPM file, or reading input somehow fails\n");
 			break;
 		case er_bad_operation:

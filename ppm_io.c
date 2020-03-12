@@ -6,6 +6,9 @@
 
 #include <assert.h>
 #include "ppm_io.h"
+#include "error.h"
+#include <string.h>
+#include <stdlib.h>
 
 
 
@@ -13,12 +16,48 @@
  * Returns the address of the heap-allocated Image struct it
  * creates and populates with the Image data.
  */
-Image * read_ppm(FILE *fp) {
+Image * read_ppm(FILE *fp, Error *error) {
 
   // check that fp is not NULL
   assert(fp); 
 
-  return NULL;  //TO DO: replace this stub
+  Image *im = malloc(sizeof(Image));
+  fseek(fp, 0, SEEK_SET); // go to start of file
+
+  char validator_p6[3];
+  int validator_cols;
+  int validator_rows;
+  int validator_shades;
+  int iRet = fread(validator_p6, 3,1,fp);
+  // code to ignore comment that might come after P6
+  char comment = fgetc(fp);
+  if (comment == '#')
+  {
+    while (comment != '\n') {
+      comment = fgetc(fp);
+    }
+  }
+  else {
+    ungetc(comment, fp);
+  }
+  
+  iRet += fscanf(fp, "%d %d %d", &validator_cols, &validator_rows, &validator_shades);
+
+  if ((strcmp(validator_p6, "P6\n") != 0) || validator_shades != 255 || iRet != 4) {
+    *error = er_bad_file;
+    return 0;
+  }
+  fgetc(fp); // move file by one character to get rid of last new line
+
+  im->rows = validator_rows;
+  im->cols = validator_cols;
+
+  Pixel *px = malloc(sizeof(Pixel) * im->rows * im->cols);
+  int num_read = fread(px, sizeof(Pixel), im->rows * im->cols, fp);
+  printf("%d pixels read\n", num_read);
+  im->data = px;
+  *error = er_yay;
+  return im; 
   
 }
 

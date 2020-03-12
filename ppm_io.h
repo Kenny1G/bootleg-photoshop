@@ -9,6 +9,7 @@
 #define PPM_IO_H
 
 #include <stdio.h>
+#include "error.h"
 
 /* A struct to store a single RGB pixel, one byte per color channel.
  */
@@ -38,7 +39,7 @@ typedef struct _image {
  * Returns the address of the heap-allocated Image struct it
  * creates and populates with the Image data.
  */
-Image * read_ppm(FILE *fp);
+Image * read_ppm(FILE *fp, Error *error);
 
 
 /* Write a PPM-formatted image to a file (assumes fp != NULL),
