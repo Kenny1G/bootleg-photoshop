@@ -41,7 +41,7 @@ Error init(Config *config)
    Image *im = read_ppm(ifp,&error);
    if (im == 0) {
        fclose(ifp);
-       return handle_error(error);
+       return error;
    }
    FILE *ofp = fopen(config->out_file_name, "wb");
    if (!ofp) {
@@ -51,6 +51,9 @@ Error init(Config *config)
    if (iRet == 0) {
        return er_writing_file_failed;
    }
+
+   free(im->data);
+   free(im);
    return er_yay;
 }
 

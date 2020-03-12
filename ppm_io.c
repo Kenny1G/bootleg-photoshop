@@ -22,14 +22,15 @@ Image * read_ppm(FILE *fp, Error *error) {
   assert(fp); 
 
   Image *im = malloc(sizeof(Image));
-  fseek(fp, 0, SEEK_SET); // go to start of file
-
   char validator_p6[3];
   int validator_cols;
   int validator_rows;
   int validator_shades;
+  
+  fseek(fp, 0, SEEK_SET); // go to start of file
   int iRet = fread(validator_p6, 3,1,fp);
-  // code to ignore comment that might come after P6
+
+  // Ignore comment that might come after P6
   char comment = fgetc(fp);
   if (comment == '#')
   {
@@ -41,8 +42,8 @@ Image * read_ppm(FILE *fp, Error *error) {
     ungetc(comment, fp);
   }
   
+  // read in validators and error check them
   iRet += fscanf(fp, "%d %d %d", &validator_cols, &validator_rows, &validator_shades);
-
   if ((strcmp(validator_p6, "P6\n") != 0) || validator_shades != 255 || iRet != 4) {
     *error = er_bad_file;
     return 0;
@@ -54,7 +55,13 @@ Image * read_ppm(FILE *fp, Error *error) {
 
   Pixel *px = malloc(sizeof(Pixel) * im->rows * im->cols);
   int num_read = fread(px, sizeof(Pixel), im->rows * im->cols, fp);
-  printf("%d pixels read\n", num_read);
+  if (num_read == 0) {
+    //Todo: find correct error
+    *error = er_bad_file;
+    free(im);
+    return 0;
+  }
+  //printf("%d pixels read\n", num_read); //sanity check
   im->data = px;
   *error = er_yay;
   return im; 
