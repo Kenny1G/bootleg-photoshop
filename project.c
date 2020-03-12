@@ -18,11 +18,40 @@ int main(int argc, char **argv)
 {
 	Config config;
 	Error eRet = parse_args(argc, argv, &config);
-	if (eRet != er_yay)
-	{
+	if (eRet != er_yay) {
 		return handle_error(eRet);
 	}
+    eRet = init(&config);
+    if (eRet != er_yay) {
+        return handle_error(eRet);
+    }
 
+    return 0;
+
+}
+
+
+Error init(Config *config)
+{
+   FILE *ifp = fopen(config->in_file_name,"rb");
+   if (!ifp) {
+       return handle_error(er_open_input_file_failed);
+   }
+   Error error;
+   Image *im = read_ppm(ifp,&error);
+   if (im == 0) {
+       fclose(ifp);
+       return handle_error(error);
+   }
+   FILE *ofp = fopen(config->out_file_name, "wb");
+   if (!ofp) {
+       return handle_error(er_writing_file_failed);
+   }
+   int iRet = write_ppm(ofp, im);
+   if (iRet == 0) {
+       return er_writing_file_failed;
+   }
+   return er_yay;
 }
 
 
@@ -44,6 +73,7 @@ Error parse_args(int argc, char **argv, Config *config)
 	}
 	config->in_file_name = argv[1];
 	fclose(pRet);
+    config->out_file_name = argv[2];
 
 	const char* user_command = argv[3];
 
@@ -113,7 +143,3 @@ Error parse_args(int argc, char **argv, Config *config)
 	}
 	return er_yay;
 }
-
-
-// Error init(Config *config)
-// {}
