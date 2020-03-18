@@ -10,7 +10,10 @@
 
 #include <stdio.h>
 #include "error.h"
+#include "ppm_io.h"
 
+
+//typedef struct _image Image;
 typedef enum _command {
 	com_exposure,
 	com_blend,
@@ -22,16 +25,18 @@ typedef enum _command {
 } Command;
 
 typedef struct _config {
-	const char *in_file_name;
-	const char *out_file_name;
+	Image *OG_image;
+	FILE *final_image_file;
 	Command command;
-	const char *extra_file_name;
+	Image *blend_image;
 	float effect_range;
 	int swirl_args[3];
 } Config;
 
+/* populates a config struct with the values user types when running commmand */
 Error parse_args(int argc, char **argv, Config *config);
+/*Runs the appropriate manipulation function on the image in config and writes a new file */
 Error init (Config *config);
 
 
-#endif //PROJECT_H_
+#endif //project.h
