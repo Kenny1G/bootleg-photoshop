@@ -15,7 +15,6 @@
 #include <string.h>
 
 
-
 int main(int argc, char **argv)
 {
 	Config config = {0,0,0,0,0,{0,0,0}};
@@ -47,6 +46,8 @@ int main(int argc, char **argv)
 
 }
 
+
+/*Runs the appropriate manipulation function on the image in config and writes new ppm to a file */
 Error init(Config *config)
 {
 	Image *output = NULL;
@@ -82,7 +83,7 @@ Error init(Config *config)
 		}
 		return eRet;
 	}
-
+	assert(output);
 	int iRet = write_ppm(config->final_image_file, config->OG_image);
 	if (iRet == 0)
 	{	
@@ -96,6 +97,7 @@ Error init(Config *config)
 }
 
 
+/* Parses command line arguments and populates a config struct */
 Error parse_args(int argc, char **argv, Config *config)
 {
 	// ensure we have enough commands

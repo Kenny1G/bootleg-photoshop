@@ -13,7 +13,7 @@
 #include "ppm_io.h"
 
 
-//typedef struct _image Image;
+/* An enum that holds all possible image manipulation commands*/
 typedef enum _command {
 	com_exposure,
 	com_blend,
@@ -24,6 +24,8 @@ typedef enum _command {
 	com_blur
 } Command;
 
+/* A struct that is used to store users arguments
+ */
 typedef struct _config {
 	Image *OG_image;
 	FILE *final_image_file;
@@ -33,10 +35,9 @@ typedef struct _config {
 	int swirl_args[3];
 } Config;
 
-/* populates a config struct with the values user types when running commmand */
-Error parse_args(int argc, char **argv, Config *config);
-/*Runs the appropriate manipulation function on the image in config and writes a new file */
+/*Runs the appropriate manipulation function on the image in config and writes new ppm to a file */
 Error init (Config *config);
 
-
+/* Parses command line arguments and populates a config struct */
+Error parse_args(int argc, char **argv, Config *config);
 #endif //project.h

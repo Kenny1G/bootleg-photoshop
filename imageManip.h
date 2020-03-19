@@ -4,6 +4,8 @@
  * 601.220, Spring 2020
  */
 
+#ifndef IMAGE_MANIP_H_
+#define IMAGE_MANIP_H_
 
 #include "error.h"
 #include "ppm_io.h"
@@ -14,3 +16,4 @@ Error zoom_in(Image *input, Image *output);
 Error zoom_out(Image *input, Image *output);
 Error pointilism(Image *input, Image *output);
 Error swirl(int swirl_args[3], Image *input, Image *output);
+#endif //imageManip.h

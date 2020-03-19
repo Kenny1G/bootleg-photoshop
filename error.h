@@ -8,6 +8,7 @@
 #ifndef ERROR_H_
 #define ERROR_H_
 
+/* An enum that holds every possible type of error */
 typedef enum _error {
     er_yay,
     er_missing_filename,
@@ -20,5 +21,6 @@ typedef enum _error {
     er_other
 }Error;
 
+/* Prints error message for passed in error */
 int handle_error(Error error);
 #endif //ERROR_H_
