@@ -33,8 +33,6 @@ typedef struct _image {
 } Image;
 
 
-
-
 /* Read a PPM-formatted image from a file (assumes fp != NULL).
  * Returns the address of the heap-allocated Image struct it
  * creates and populates with the Image data.
@@ -45,7 +43,8 @@ Image * read_ppm(FILE *fp, Error *error);
 /* Write a PPM-formatted image to a file (assumes fp != NULL),
  * and return the number of pixels successfully written.
  */
-int write_ppm(FILE *fp, const Image *im);
+int write_ppm(FILE *fp, const Image *im, Error *error);
 
-
+/* Returns a deep copy of an Image */
+Image* copy_ppm(Image *ppm, Error *error);
 #endif

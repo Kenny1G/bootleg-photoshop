@@ -31,7 +31,7 @@ int main(int argc, char **argv)
 	}
     eRet = init(&config);
     if (eRet != er_yay) {
-		 if (config.OG_image != 0) {
+		if (config.OG_image != 0) {
 			free(config.OG_image->data);
 			free(config.OG_image);
 		}
@@ -50,8 +50,11 @@ int main(int argc, char **argv)
 /*Runs the appropriate manipulation function on the image in config and writes new ppm to a file */
 Error init(Config *config)
 {
-	Image *output = NULL;
 	Error eRet = er_yay;
+	Image *output = copy_ppm(config->OG_image, &eRet);
+	if (eRet != er_yay) {
+		return eRet;
+	}
 	switch (config->command) {
 	case com_exposure:
 		eRet = exposure(config->effect_range, config->OG_image, output);
@@ -78,21 +81,16 @@ Error init(Config *config)
 		return er_bad_operation;
    }
 	if (eRet != er_yay) {
-		if (output != NULL) {
-			free(output);
-		}
+		free(output);
 		return eRet;
 	}
-	assert(output);
-	int iRet = write_ppm(config->final_image_file, config->OG_image);
+	int iRet = write_ppm(config->final_image_file, output, &eRet);
+	free(output->data);
+	free(output);
 	if (iRet == 0)
 	{	
-		fclose(config->final_image_file);
-		return er_writing_file_failed;
+		return eRet;
 	}
-
-	free(config->OG_image->data);
-	free(config->OG_image);
 	return er_yay;
 }
 
