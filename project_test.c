@@ -1,10 +1,19 @@
 /* TESTS AHOY! */
 
+#include "project_test.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
 #include "project.h"
 #include "ppm_io.h"
+
+
+int main()
+{
+	final_test_read("data/building.ppm");
+	final_test_read("data/trees.ppm");	
+}
+
 
 Image * create_image()
 {
@@ -100,9 +109,5 @@ void final_test_read(const char* og_filename) {
 	free(read_im->data);
 	free(read_im);
 }
-int main()
-{
-	final_test_read("data/building.ppm");
-	final_test_read("data/trees.ppm");	
-}
+
 
