@@ -126,8 +126,7 @@ Image* copy_ppm(Image *ppm, Error *error)
 	copy->data = pix;
 	for (int r = 0; r < ppm->rows; r++) {
 		for (int c = 0; c < ppm->cols; c++) {
-			Pixel colour = {ppm->data[(r * ppm->cols) + c].r, ppm->data[(r * ppm->cols) + c].g, ppm->data[(r * ppm->cols) + c].b};
-			copy->data[(r * ppm->cols) + c] = colour;
+			copy->data[(r * ppm->cols) + c] = ppm->data[(r * ppm->cols) + c];
 		}
 	}
 	return copy;
