@@ -6,6 +6,7 @@
 #include <assert.h>
 #include "project.h"
 #include "ppm_io.h"
+#include "imageManip.h"
 
 int main()
 {
@@ -13,6 +14,8 @@ int main()
 	final_test_read("data/trees.ppm");
 	test_copy("data/building.ppm");
 	test_copy("data/trees.ppm");
+	test_exposure("data/trees.ppm","results/trees-exp-negone.ppm",-1);
+	test_exposure("data/trees.ppm", "results/trees-exp-one.ppm",1);
 }
 
 
@@ -139,4 +142,25 @@ void test_copy(const char *og_filename)
 	free(copied_ppm);
 	free(ppm->data);
 	free(ppm);
+}
+
+
+/* The following functions read the correct image from the results folder
+ * run's the appropriate manipulation function from imageManip 
+ * and then compares the outputs to check if they're the same 
+ */
+void test_exposure(const char *og_filename, const char *result_filename, float effect_range)
+{
+	Image *result_im = test_read(result_filename);
+	Image *og_im = test_read(og_filename);
+	Error eRet = er_yay;
+	Image *output = copy_ppm(og_im, &eRet);
+	eRet = exposure(effect_range, og_im, output);
+	images_equal(result_im, output);
+	free(output->data);
+	free(output);
+	free(result_im->data);
+	free(result_im);
+	free(og_im->data);
+	free(og_im);
 }
