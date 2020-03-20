@@ -13,7 +13,7 @@ CFLAGS=-std=c99 -pedantic -Wall -Wextra -g
 #	$(CC) $(CFLAGS) -c demo_ppm.c
 
 project: project.o blur.o imageManip.o ppm_io.o error.o 
-	$(CC) project.o blur.o imageManip.o ppm_io.o error.o -o project
+	$(CC) project.o blur.o imageManip.o ppm_io.o error.o -o project -lm
 
 project.o: project.c project.h blur.h imageManip.h ppm_io.h error.h
 	$(CC) $(CFLAGS) -c project.c
