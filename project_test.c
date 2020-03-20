@@ -1,4 +1,6 @@
-/* TESTS AHOY! */
+/* TESTS AHOY! 
+ * log file is test/project_test.log
+ */
 
 #include "project_test.h"
 #include <stdio.h>
