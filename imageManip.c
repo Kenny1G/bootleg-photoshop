@@ -33,3 +33,11 @@ Error exposure(float expos_val, Image *input, Image *output)
 	}
 	return er_yay;
 }
+
+
+Error blend(float alpha, Image *input1, Image *input2, Image *output)
+{
+	free(input2->data);
+	free(input2);
+	return er_yay;
+}

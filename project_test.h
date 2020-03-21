@@ -4,6 +4,16 @@
 #define PROJECT_TEST_H_
 
 #include "ppm_io.h"
+
+typedef enum _test_command {
+	tst_exposure,
+	tst_blend,
+	tst_zoom_in,
+	tst_zoom_out,
+	tst_pointilism,
+	tst_swirl,
+	tst_blur
+} testCommand;
 /* creates a basic image*/
 Image *create_image(FILE *logfile);
 /* checks if two image objects are exactly the same */
@@ -21,10 +31,11 @@ void final_test_read(const char *og_filename, const char *output_filename, FILE 
  * compares copied image and read image to ensure they're the same */
 void test_copy(const char *og_filename, FILE *logfile);
 
-/* The following functions read the correct image from the results folder
- * run's the appropriate manipulation function from imageManip 
- * and then compares the outputs to check if they're the same 
+/* Reads the correct image from the results folder
+ * Run's the manipulation function from imageManip.c specified by testCommand
+ * Compares the outputs of correct image and image from manipulation function 
+ * to check if they're the same 
  */
+void test_manip(testCommand com, const char *og_filename, const char *og_2filename, const char *result_filename, float effect_range, const char *output_filename, FILE *logfile);
 
-void test_exposure(const char *og_filename, const char *result_filename, float effect_range, const char *output_filename, FILE *logfile);
 #endif //project_test.h

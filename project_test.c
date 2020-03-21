@@ -22,18 +22,26 @@ int main()
 
 	final_test_read("data/building.ppm", "test/building.ppm", logfile);
 	fwrite("reading building.ppm passed\n", 1, strlen("reading building.ppm passed\n"), logfile);
+
 	final_test_read("data/trees.ppm", "test/trees.ppm",logfile);
 	fprintf(logfile, "reading trees.ppm passed\n");
 
+
 	test_copy("data/building.ppm", logfile);
 	fprintf(logfile, "copying building.ppm passed\n");
+
 	test_copy("data/trees.ppm", logfile);
 	fprintf(logfile, "copying trees.ppm passed\n");
 
-	test_exposure("data/trees.ppm", "results/trees-exp-one.ppm",1, "test/trees-exp-one.ppm", logfile);
-	fprintf(logfile, "exposure one passed\n");
-	test_exposure("data/trees.ppm","results/trees-exp-negone.ppm",-1, "test/trees-exp-negone.ppm", logfile);	
-	fprintf(logfile, "exposure negone passed\n");
+
+	test_manip(tst_exposure, "data/trees.ppm", "", "results/trees-exp-one.ppm",1, "test/trees-exp-one.ppm", logfile);
+	fprintf(logfile, "exposure 1 trees.ppm: passed\n");
+
+	test_manip(tst_exposure, "data/trees.ppm", "", "results/trees-exp-negone.ppm",-1, "test/trees-exp-negone.ppm", logfile);	
+	fprintf(logfile, "exposure -1 trees.ppm: passed\n");
+
+	test_manip(tst_blend, "data/trees.ppm", "data/building.ppm", "results/trees-building-blended.ppm", 0.5, "test/trees-building-0.5-blended.ppm", logfile);
+	fprintf(logfile, "alpha-blend 0.5 trees.ppm building.ppm: passed\n");
 
 	fclose(logfile);
 }
@@ -174,18 +182,51 @@ void test_copy(const char *og_filename, FILE *logfile)
 }
 
 
-/* The following functions read the correct image from the results folder
- * run's the appropriate manipulation function from imageManip 
- * and then compares the outputs to check if they're the same 
- * and then writes the manipulated image to ouput_filename
+/* Reads the correct image from the results folder
+ * Run's the manipulation function from imageManip.c specified by testCommand
+ * Compares the outputs of correct image and image from manipulation function 
+ * to check if they're the same 
  */
-void test_exposure(const char *og_filename, const char *result_filename, float effect_range, const char *output_filename, FILE *logfile)
+void test_manip(testCommand com, const char *og_filename, const char *og_2filename, const char *result_filename, float effect_range, const char *output_filename, FILE *logfile)
 {
 	Image *result_im = test_read(result_filename, logfile);
 	Image *og_im = test_read(og_filename, logfile);
 	Error eRet = er_yay;
 	Image *output = copy_ppm(og_im, &eRet);
-	eRet = exposure(effect_range, og_im, output);
+	Image *og2_im = NULL;
+	switch(com)
+	{
+		case tst_exposure:
+			eRet = exposure(effect_range, og_im, output);
+			break;
+		case tst_blend:
+			og2_im = test_read(og_2filename, logfile);
+			eRet = blend(effect_range, og_im, og2_im, output);
+			break;
+		case tst_zoom_in:
+			//eRet = zoom_in(og2_im,output);
+			break;
+		case tst_zoom_out:
+			//eRet = zoom_out(og_im, output);
+			break;
+		case tst_pointilism:
+			//eRet = swirl(effect_range, og_im, output);
+			break;
+		case tst_swirl:
+			//eRet = blur(effect_range, og_im, output);
+			break;
+		default:
+			fprintf(logfile, "project_test.c::test_manip() Unknown command");
+			free(output->data);
+			free(output);
+			free(result_im->data);
+			free(result_im);
+			free(og_im->data);
+			free(og_im);
+			fclose(logfile);
+			exit(1);
+	}
+	
 	FILE *test_file = fopen(output_filename, "wb");
 	if (!test_file) {
 		fprintf(logfile, "project_test.c::test_exposure open test_file failed\n");
