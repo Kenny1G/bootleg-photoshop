@@ -20,28 +20,31 @@ int main()
 		return 1;
 	}	
 
-	final_test_read("data/building.ppm", "test/building.ppm", logfile);
-	fwrite("reading building.ppm passed\n", 1, strlen("reading building.ppm passed\n"), logfile);
+	// final_test_read("data/building.ppm", "test/building.ppm", logfile);
+	// fwrite("reading building.ppm passed\n", 1, strlen("reading building.ppm passed\n"), logfile);
 
-	final_test_read("data/trees.ppm", "test/trees.ppm",logfile);
-	fprintf(logfile, "reading trees.ppm passed\n");
-
-
-	test_copy("data/building.ppm", logfile);
-	fprintf(logfile, "copying building.ppm passed\n");
-
-	test_copy("data/trees.ppm", logfile);
-	fprintf(logfile, "copying trees.ppm passed\n");
+	// final_test_read("data/trees.ppm", "test/trees.ppm",logfile);
+	// fprintf(logfile, "reading trees.ppm passed\n");
 
 
-	test_manip(tst_exposure, "data/trees.ppm", "", "results/trees-exp-one.ppm",1, "test/trees-exp-one.ppm", logfile);
-	fprintf(logfile, "exposure 1 trees.ppm: passed\n");
+	// test_copy("data/building.ppm", logfile);
+	// fprintf(logfile, "copying building.ppm passed\n");
 
-	test_manip(tst_exposure, "data/trees.ppm", "", "results/trees-exp-negone.ppm",-1, "test/trees-exp-negone.ppm", logfile);	
-	fprintf(logfile, "exposure -1 trees.ppm: passed\n");
+	// test_copy("data/trees.ppm", logfile);
+	// fprintf(logfile, "copying trees.ppm passed\n");
 
-	test_manip(tst_blend, "data/trees.ppm", "data/building.ppm", "results/trees-building-blended.ppm", 0.5, "test/trees-building-0.5-blended.ppm", logfile);
-	fprintf(logfile, "alpha-blend 0.5 trees.ppm building.ppm: passed\n");
+
+	// test_manip(tst_exposure, "data/trees.ppm", "", "results/trees-exp-one.ppm",1, "test/trees-exp-one.ppm", logfile);
+	// fprintf(logfile, "exposure 1 trees.ppm: passed\n");
+
+	// test_manip(tst_exposure, "data/trees.ppm", "", "results/trees-exp-negone.ppm",-1, "test/trees-exp-negone.ppm", logfile);	
+	// fprintf(logfile, "exposure -1 trees.ppm: passed\n");
+
+	// test_manip(tst_blend, "data/trees.ppm", "data/building.ppm", "results/trees-building-blended.ppm", 0.5, "test/trees-building-0.5-blended.ppm", logfile);
+	// fprintf(logfile, "alpha-blend 0.5 trees.ppm building.ppm: passed\n");
+
+	test_manip(tst_blend, "data/kitten.ppm", "data/puppy.ppm", "results/kitten-puppy-blend-0.5.ppm", 0.5, "test/kitten-puppy-0.5-blended.ppm", logfile);
+	fprintf(logfile, "alpha-blend 0.5 kitten.ppm blend.ppm: passed\n");
 
 	fclose(logfile);
 }
@@ -99,7 +102,8 @@ void images_equal(Image *actual, Image *read, FILE *logfile)
 			unsigned char ab = actual->data[(r * actual->cols) + c].b;
 			unsigned char ob = read->data[((r * actual->cols)) + c].b;
 			if (ar != or || ag != og || ab != ob) {
-				fprintf(logfile, "r: %d %d\ng: %d %d\nb: %d %d", ar, or, ag, og, ab, ob);
+				fprintf(logfile, "row: %d   column: %d\n", r, c);
+				fprintf(logfile, "result  mine\nr: %d %d\ng: %d %d\nb: %d %d", ar, or, ag, og, ab, ob);
 				printf("Uh oh, check logfile\n");
 				fclose(logfile);
 				exit(1);
