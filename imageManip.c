@@ -81,13 +81,17 @@ Error blend(float alpha, Image *input1, Image *input2, Image *output)
 				int alphab = (alpha * input1->data[(r * input1->cols) + c].b) + ( (1 - alpha) * input2->data[(r * input2->cols) + c].b);
 				Pixel pix = {alphar, alphag, alphab};
 				output->data[(r*output->cols) + c] = pix;
-			}
-			else {
+			} else {
 				output->data[(r*output->cols) + c] = black;
 			}
 		}
 	}
 	free(input2->data);
 	free(input2);
+	return er_yay;
+}
+
+
+Error zoom_in(Image *input, Image *output) {
 	return er_yay;
 }

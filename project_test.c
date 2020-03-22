@@ -20,31 +20,34 @@ int main()
 		return 1;
 	}	
 
-	// final_test_read("data/building.ppm", "test/building.ppm", logfile);
-	// fwrite("reading building.ppm passed\n", 1, strlen("reading building.ppm passed\n"), logfile);
+	final_test_read("data/building.ppm", "test/building.ppm", logfile);
+	fwrite("reading building.ppm passed\n", 1, strlen("reading building.ppm passed\n"), logfile);
 
-	// final_test_read("data/trees.ppm", "test/trees.ppm",logfile);
-	// fprintf(logfile, "reading trees.ppm passed\n");
-
-
-	// test_copy("data/building.ppm", logfile);
-	// fprintf(logfile, "copying building.ppm passed\n");
-
-	// test_copy("data/trees.ppm", logfile);
-	// fprintf(logfile, "copying trees.ppm passed\n");
+	final_test_read("data/trees.ppm", "test/trees.ppm",logfile);
+	fprintf(logfile, "reading trees.ppm passed\n");
 
 
-	// test_manip(tst_exposure, "data/trees.ppm", "", "results/trees-exp-one.ppm",1, "test/trees-exp-one.ppm", logfile);
-	// fprintf(logfile, "exposure 1 trees.ppm: passed\n");
+	test_copy("data/building.ppm", logfile);
+	fprintf(logfile, "copying building.ppm passed\n");
 
-	// test_manip(tst_exposure, "data/trees.ppm", "", "results/trees-exp-negone.ppm",-1, "test/trees-exp-negone.ppm", logfile);	
-	// fprintf(logfile, "exposure -1 trees.ppm: passed\n");
+	test_copy("data/trees.ppm", logfile);
+	fprintf(logfile, "copying trees.ppm passed\n");
 
-	// test_manip(tst_blend, "data/trees.ppm", "data/building.ppm", "results/trees-building-blended.ppm", 0.5, "test/trees-building-0.5-blended.ppm", logfile);
-	// fprintf(logfile, "alpha-blend 0.5 trees.ppm building.ppm: passed\n");
+
+	test_manip(tst_exposure, "data/trees.ppm", "", "results/trees-exp-one.ppm",1, "test/trees-exp-one.ppm", logfile);
+	fprintf(logfile, "exposure 1 trees.ppm: passed\n");
+
+	test_manip(tst_exposure, "data/trees.ppm", "", "results/trees-exp-negone.ppm",-1, "test/trees-exp-negone.ppm", logfile);	
+	fprintf(logfile, "exposure -1 trees.ppm: passed\n");
+
+	test_manip(tst_blend, "data/trees.ppm", "data/building.ppm", "results/trees-building-blended.ppm", 0.5, "test/trees-building-0.5-blended.ppm", logfile);
+	fprintf(logfile, "alpha-blend 0.5 trees.ppm building.ppm: passed\n");
 
 	test_manip(tst_blend, "data/kitten.ppm", "data/puppy.ppm", "results/kitten-puppy-blend-0.5.ppm", 0.5, "test/kitten-puppy-0.5-blended.ppm", logfile);
 	fprintf(logfile, "alpha-blend 0.5 kitten.ppm blend.ppm: passed\n");
+
+	test_manip(tst_zoom_in, "data/building.ppm", "", "results/building-zoomed-in.ppm", 0, "test/building-zoomed-in.ppm", logfile);
+	fprintf(logfile, "zoom_in building.ppm: passed\n");
 
 	fclose(logfile);
 }
@@ -89,10 +92,16 @@ Image *create_image(FILE *logfile)
 /* checks if two image objects are exactly the same */
 void images_equal(Image *actual, Image *read, FILE *logfile)
 {
-	assert(actual->rows == read->rows);
+	if(actual->rows != read->rows || actual->cols != read->cols) {
+		fprintf(logfile, "Expected | Ours\n");
+		fprintf(logfile, "%d | %d \n", actual->rows, read->rows); 
+		fprintf(logfile, "%d | %d \n", actual->cols, read->cols);
+		printf("Uh oh, check logfile\n");
+		fclose(logfile);
+		exit(1);
+	}
 	//fprintf(logfile, "%d\n", read->rows); //sanity check
 	//fprintf(logfile, "%d\n", read->cols); //sanity check
-	assert(actual->cols == actual->cols);
 	for (int r = 0; r < actual->rows; ++r) {
 		for (int c = 0; c < actual->cols; ++c) {
 			unsigned char ar = actual->data[(r * actual->cols) + c].r;
@@ -102,8 +111,8 @@ void images_equal(Image *actual, Image *read, FILE *logfile)
 			unsigned char ab = actual->data[(r * actual->cols) + c].b;
 			unsigned char ob = read->data[((r * actual->cols)) + c].b;
 			if (ar != or || ag != og || ab != ob) {
-				fprintf(logfile, "row: %d   column: %d\n", r, c);
-				fprintf(logfile, "result  mine\nr: %d %d\ng: %d %d\nb: %d %d", ar, or, ag, og, ab, ob);
+				fprintf(logfile, "Row: %d |  column: %d\n", r, c);
+				fprintf(logfile, "Expected | Ours\nr: %d | %d\ng: %d | %d\nb: %d | %d", ar, or, ag, og, ab, ob);
 				printf("Uh oh, check logfile\n");
 				fclose(logfile);
 				exit(1);
@@ -208,7 +217,7 @@ void test_manip(testCommand com, const char *og_filename, const char *og_2filena
 			eRet = blend(effect_range, og_im, og2_im, output);
 			break;
 		case tst_zoom_in:
-			//eRet = zoom_in(og2_im,output);
+			eRet = zoom_in(og2_im,output);
 			break;
 		case tst_zoom_out:
 			//eRet = zoom_out(og_im, output);
