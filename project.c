@@ -81,6 +81,7 @@ Error init(Config *config)
 		return er_bad_operation;
    }
 	if (eRet != er_yay) {
+		free(output->data);
 		free(output);
 		return eRet;
 	}

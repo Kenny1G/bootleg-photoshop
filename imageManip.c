@@ -93,5 +93,25 @@ Error blend(float alpha, Image *input1, Image *input2, Image *output)
 
 
 Error zoom_in(Image *input, Image *output) {
+	output->rows = input->rows * 2;
+	output->cols = input->cols * 2;
+	Pixel * tmp = realloc(output->data, sizeof(Pixel) * output->rows * output->cols);
+	if (tmp) {
+		output->data = tmp;
+	} else {
+		fprintf(stderr, "imageManip.c::zoom_in() output->data realloc failed");
+		return er_other;
+	}
+
+	for (int r = 0; r < input->rows; ++r) {
+		for (int c = 0; c < input->cols; ++c) {
+			int or = r * 2;
+			int oc = c * 2;
+			output->data[( or * output->cols) + oc] = input->data[(r * input->cols) + c];
+			output->data[(or * output->cols) + oc + 1] = input->data[(r * input->cols) + c];
+			output->data[((or+1) * output->cols) + oc ] = input->data[(r * input->cols) + c];
+			output->data[((or + 1) * output->cols) + oc + 1] = input->data[(r * input->cols) + c];
+		}
+	}
 	return er_yay;
 }

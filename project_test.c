@@ -217,7 +217,7 @@ void test_manip(testCommand com, const char *og_filename, const char *og_2filena
 			eRet = blend(effect_range, og_im, og2_im, output);
 			break;
 		case tst_zoom_in:
-			eRet = zoom_in(og2_im,output);
+			eRet = zoom_in(og_im,output);
 			break;
 		case tst_zoom_out:
 			//eRet = zoom_out(og_im, output);
