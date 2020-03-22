@@ -56,8 +56,15 @@ Error blend(float alpha, Image *input1, Image *input2, Image *output)
 	}
 
 	Pixel * tmp = realloc(output->data, sizeof(Pixel) * image_with_bigger_row->rows * image_with_bigger_col->cols);
-	//TODO: check for error in realloc
-	output->data = tmp;
+	if (tmp) {
+		output->data = tmp;
+	}
+	else {
+		free(input2->data);
+		free(input2);
+		fprintf(stderr, "imageManip.c::blend() output->data realloc failed");
+		return er_other;
+	}
 
 	Pixel black = {0,0,0};
 	for (int r = 0; r < output->rows; ++r) {
