@@ -70,7 +70,7 @@ Error init(Config *config)
 		//eRet = zoom_out(config->OG_image, output);
 		break;
 	case com_pointilism:
-		//eRet = pointilism(config->OG_image, output);
+		eRet = pointilism(config->OG_image, output);
 		break;
 	case com_swirl:
 		//eRet = swirl(config->swirl_args, config->OG_image, output);
@@ -190,18 +190,18 @@ Error parse_args(int argc, char **argv, Config *config)
 			return er_insuff_args;
 		}
 		if (strstr(argv[6], ".") != NULL) {
-			return er_insuff_args;
+			return er_args_out_of_range;
 		}
 		for(int i = 0; i < 3; ++i) {
 			int val = atoi(argv[i+4]);
 			//TODO: ask if the x and y coordinates can be 0
 			if (val < 0) {
-				return er_insuff_args;
+				return er_args_out_of_range;
 			}
 			config->swirl_args[i] = val;
 		}
 		if (config->swirl_args[0] > config->OG_image->cols || config->swirl_args[1] > config->OG_image->rows) {
-			return er_insuff_args;
+			return er_args_out_of_range;
 		}
 	}
 	else if (strcmp(user_command, "blur") == 0) {
@@ -212,13 +212,13 @@ Error parse_args(int argc, char **argv, Config *config)
 		int i = 0;
 		for (; argv[4][i] != 0; ++i) {
 			if (!isdigit(argv[4][i])) {
-				return er_insuff_args;
+				return er_args_out_of_range;
 			}
 		}
 		
 		config->effect_range = atof(argv[4]);
 		if (config->effect_range < 0) {
-			return er_insuff_args;
+			return er_args_out_of_range;
 		}
 	}
 	else {

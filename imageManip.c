@@ -138,3 +138,8 @@ Error pointilism(Image *input, Image *output) {
 
 	return er_yay;	
 }
+
+
+Error swirl(int swirl_args[3], Image *input, Image *output) {
+	return er_yay;
+}

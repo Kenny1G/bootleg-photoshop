@@ -49,13 +49,34 @@ int main()
 	// test_manip(tst_zoom_in, "data/building.ppm", "", "results/building-zoomed-in.ppm", 0, "test/building-zoomed-in.ppm", logfile);
 	// fprintf(logfile, "zoom_in building.ppm: passed\n");
 
-	//this test doesn't work with pointilism for some reason
-	// pointilism has been tested with linux compare command and my lovely eyes.
 	// test_manip(tst_pointilism, "data/trees.ppm", "", "results/trees-pointilism.ppm", 0, "test/trees-pointilism.ppm", logfile);
 	// fprintf(logfile, "pointilism trees.ppm: passed\n");
 
+	//this test doesn't work with building pointilism for some reason
+	//building pointilism has been tested with linux compare command and my ever so helpful eyes.
 	// test_manip(tst_pointilism, "data/building.ppm", "", "results/building-pointilism.ppm", 0, "test/building-pointilism.ppm", logfile);
 	// fprintf(logfile, "pointilism building.ppm: passed\n");
+
+	fprintf(logfile, "testing swirl 100 building.ppm:\n");
+	test_manip(tst_swirl, "data/building.ppm", "", "results/building-swirl-100.ppm", 100, "test/building-swirl-100.ppm", logfile);
+	fprintf(logfile, "passed \n");
+
+	test_manip(tst_swirl, "data/building.ppm", "", "results/building-swirl-25.ppm", 25, "test/building-swirl-25.ppm", logfile);
+	fprintf(logfile, "swirl 25 building.ppm: passed \n");
+
+	test_manip(tst_swirl, "data/building.ppm", "", "results/building-swirl-50.ppm", 50, "test/building-swirl-50.ppm", logfile);
+	fprintf(logfile, "swirl 50 building.ppm: passed \n");
+
+	test_manip(tst_swirl, "data/trees.ppm", "", "results/trees-swirl-100.ppm", 100, "test/trees-swirl-100.ppm", logfile);
+	fprintf(logfile, "swirl 100 trees.ppm: passed \n");
+
+	test_manip(tst_swirl, "data/trees.ppm", "", "results/trees-swirl-25.ppm", 25, "test/trees-swirl-25.ppm", logfile);
+	fprintf(logfile, "swirl 25 trees.ppm: passed \n");
+
+	test_manip(tst_swirl, "data/trees.ppm", "", "results/trees-swirl-50.ppm", 50, "test/trees-swirl-50.ppm", logfile);
+	fprintf(logfile, "swirl 50 trees.ppm: passed \n");
+
+	
 
 	printf("KAMPAII! All tests passed! \n");
 	fclose(logfile);
@@ -216,6 +237,8 @@ void test_manip(testCommand com, const char *og_filename, const char *og_2filena
 	Error eRet = er_yay;
 	Image *output = copy_ppm(og_im, &eRet);
 	Image *og2_im = NULL;
+	int strength = effect_range;
+	int args[3] = {400, 300, strength};
 	switch(com)
 	{
 	case tst_exposure:
@@ -235,7 +258,7 @@ void test_manip(testCommand com, const char *og_filename, const char *og_2filena
 		eRet = pointilism(og_im, output);
 		break;
 	case tst_swirl:
-		//eRet = swirl(effect_range, og_im, output);
+		eRet = swirl(args, og_im, output);
 		break;
 	case tst_blur:
 		//eRet = blur(effect_range, og_im, output);
