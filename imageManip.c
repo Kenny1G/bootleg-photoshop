@@ -141,5 +141,32 @@ Error pointilism(Image *input, Image *output) {
 
 
 Error swirl(int swirl_args[3], Image *input, Image *output) {
+	int cx = swirl_args[0];
+	int cy = swirl_args[1];
+
+	// set all of output to black
+	Pixel black = {0,0,0};
+	for (int r = 0; r < output->rows; ++r) {
+		for (int c = 0; c < output->cols; ++c) {
+			output->data[(r * output->cols) + c] = black;
+		}
+	}
+	
+	for (int r = 0; r < input->rows; ++r) {
+		for (int c = 0; c < input->cols; ++c) {
+			double alpha = sqrt(pow((c - cx),2) + pow((r - cy),2)) / swirl_args[2];
+			double cos_alpha = cos(alpha);
+			double sin_alpha = sin(alpha);
+
+			int or = ((c - cx) * sin_alpha) + ((r - cy) * cos_alpha) + cy;
+			int oc = ((c - cx) * cos_alpha) - ((r - cy) * sin_alpha) + cx;
+			if (oc < 0 || or < 0 || oc >= input->cols || or >= input->rows) {
+				output->data[(r * output->cols) + c] = black;
+			} else {
+				output->data[(r * output->cols) + c] = input->data[(or * input->cols) + oc];
+			}
+		}
+	}
+
 	return er_yay;
 }
