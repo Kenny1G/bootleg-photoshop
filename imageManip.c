@@ -129,7 +129,7 @@ Error pointilism(Image *input, Image *output) {
 			for (int c = x - 10; c < x + 10; ++c) {
 				if ( r >= 0 && r < output->rows && c < output->cols && c >= 0) {
 					if ( (pow((y - r),2) + pow((x - c), 2)) <= pow(dot_radius,2)) {
-						output->data[(r * output->cols) + c] = input->data[(y * input->cols) + x];
+						output->data[(r * output->cols) + c] = output->data[(y * output->cols) + x];
 					}
 				}
 			}
