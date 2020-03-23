@@ -71,7 +71,6 @@ Image *read_ppm(FILE *fp, Error *error)
 	}
 	int num_read = fread(px, sizeof(Pixel), im->rows * im->cols, fp);
 	if (num_read == 0) {
-		//TODO: find correct error
 		*error = er_bad_file;
 		free(px);
 		free(im);

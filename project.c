@@ -13,6 +13,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <ctype.h>
 
 
 int main(int argc, char **argv)
@@ -208,8 +209,17 @@ Error parse_args(int argc, char **argv, Config *config)
 		if ((argc - 4) != 1) {
 			return er_insuff_args;
 		}
-		//TODO: find out what range is allowed for blur
+		int i = 0;
+		for (; argv[4][i] != 0; ++i) {
+			if (!isdigit(argv[4][i])) {
+				return er_insuff_args;
+			}
+		}
+		
 		config->effect_range = atof(argv[4]);
+		if (config->effect_range < 0) {
+			return er_insuff_args;
+		}
 	}
 	else {
 		return er_bad_operation;
