@@ -188,9 +188,19 @@ Error parse_args(int argc, char **argv, Config *config)
 		if ((argc - 4) != 3) {
 			return er_insuff_args;
 		}
-		//TODO: error checks for individual swirl arguments
+		if (strstr(argv[6], ".") != NULL) {
+			return er_insuff_args;
+		}
 		for(int i = 0; i < 3; ++i) {
-			config->swirl_args[i] = atoi(argv[i+4]);
+			int val = atoi(argv[i+4]);
+			//TODO: ask if the x and y coordinates can be 0
+			if (val < 0) {
+				return er_insuff_args;
+			}
+			config->swirl_args[i] = val;
+		}
+		if (config->swirl_args[0] > config->OG_image->cols || config->swirl_args[1] > config->OG_image->rows) {
+			return er_insuff_args;
 		}
 	}
 	else if (strcmp(user_command, "blur") == 0) {
