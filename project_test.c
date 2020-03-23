@@ -20,35 +20,44 @@ int main()
 		return 1;
 	}	
 
-	final_test_read("data/building.ppm", "test/building.ppm", logfile);
-	fwrite("reading building.ppm passed\n", 1, strlen("reading building.ppm passed\n"), logfile);
+	// final_test_read("data/building.ppm", "test/building.ppm", logfile);
+	// fwrite("reading building.ppm passed\n", 1, strlen("reading building.ppm passed\n"), logfile);
 
-	final_test_read("data/trees.ppm", "test/trees.ppm",logfile);
-	fprintf(logfile, "reading trees.ppm passed\n");
-
-
-	test_copy("data/building.ppm", logfile);
-	fprintf(logfile, "copying building.ppm passed\n");
-
-	test_copy("data/trees.ppm", logfile);
-	fprintf(logfile, "copying trees.ppm passed\n");
+	// final_test_read("data/trees.ppm", "test/trees.ppm",logfile);
+	// fprintf(logfile, "reading trees.ppm passed\n");
 
 
-	test_manip(tst_exposure, "data/trees.ppm", "", "results/trees-exp-one.ppm",1, "test/trees-exp-one.ppm", logfile);
-	fprintf(logfile, "exposure 1 trees.ppm: passed\n");
+	// test_copy("data/building.ppm", logfile);
+	// fprintf(logfile, "copying building.ppm passed\n");
 
-	test_manip(tst_exposure, "data/trees.ppm", "", "results/trees-exp-negone.ppm",-1, "test/trees-exp-negone.ppm", logfile);	
-	fprintf(logfile, "exposure -1 trees.ppm: passed\n");
+	// test_copy("data/trees.ppm", logfile);
+	// fprintf(logfile, "copying trees.ppm passed\n");
 
-	test_manip(tst_blend, "data/trees.ppm", "data/building.ppm", "results/trees-building-blended.ppm", 0.5, "test/trees-building-0.5-blended.ppm", logfile);
-	fprintf(logfile, "alpha-blend 0.5 trees.ppm building.ppm: passed\n");
 
-	test_manip(tst_blend, "data/kitten.ppm", "data/puppy.ppm", "results/kitten-puppy-blend-0.5.ppm", 0.5, "test/kitten-puppy-0.5-blended.ppm", logfile);
-	fprintf(logfile, "alpha-blend 0.5 kitten.ppm blend.ppm: passed\n");
+	// test_manip(tst_exposure, "data/trees.ppm", "", "results/trees-exp-one.ppm",1, "test/trees-exp-one.ppm", logfile);
+	// fprintf(logfile, "exposure 1 trees.ppm: passed\n");
 
-	test_manip(tst_zoom_in, "data/building.ppm", "", "results/building-zoomed-in.ppm", 0, "test/building-zoomed-in.ppm", logfile);
-	fprintf(logfile, "zoom_in building.ppm: passed\n");
+	// test_manip(tst_exposure, "data/trees.ppm", "", "results/trees-exp-negone.ppm",-1, "test/trees-exp-negone.ppm", logfile);	
+	// fprintf(logfile, "exposure -1 trees.ppm: passed\n");
 
+	// test_manip(tst_blend, "data/trees.ppm", "data/building.ppm", "results/trees-building-blended.ppm", 0.5, "test/trees-building-0.5-blended.ppm", logfile);
+	// fprintf(logfile, "alpha-blend 0.5 trees.ppm building.ppm: passed\n");
+
+	// test_manip(tst_blend, "data/kitten.ppm", "data/puppy.ppm", "results/kitten-puppy-blend-0.5.ppm", 0.5, "test/kitten-puppy-0.5-blended.ppm", logfile);
+	// fprintf(logfile, "alpha-blend 0.5 kitten.ppm blend.ppm: passed\n");
+
+	// test_manip(tst_zoom_in, "data/building.ppm", "", "results/building-zoomed-in.ppm", 0, "test/building-zoomed-in.ppm", logfile);
+	// fprintf(logfile, "zoom_in building.ppm: passed\n");
+
+	test_manip(tst_pointilism, "data/building.ppm", "", "results/building-pointilism.ppm", 0, "test/building-pointilism.ppm", logfile);
+	fprintf(logfile, "pointilism building.ppm: passed\n");
+
+	test_manip(tst_pointilism, "data/trees.ppm", "", "results/trees-pointilism.ppm", 0, "test/trees-pointilism.ppm", logfile);
+	fprintf(logfile, "pointilism trees.ppm: passed\n");
+
+	
+
+	printf("KAMPAII! All tests passed! \n");
 	fclose(logfile);
 }
 
@@ -209,35 +218,38 @@ void test_manip(testCommand com, const char *og_filename, const char *og_2filena
 	Image *og2_im = NULL;
 	switch(com)
 	{
-		case tst_exposure:
-			eRet = exposure(effect_range, og_im, output);
-			break;
-		case tst_blend:
-			og2_im = test_read(og_2filename, logfile);
-			eRet = blend(effect_range, og_im, og2_im, output);
-			break;
-		case tst_zoom_in:
-			eRet = zoom_in(og_im,output);
-			break;
-		case tst_zoom_out:
-			//eRet = zoom_out(og_im, output);
-			break;
-		case tst_pointilism:
-			//eRet = swirl(effect_range, og_im, output);
-			break;
-		case tst_swirl:
-			//eRet = blur(effect_range, og_im, output);
-			break;
-		default:
-			fprintf(logfile, "project_test.c::test_manip() Unknown command");
-			free(output->data);
-			free(output);
-			free(result_im->data);
-			free(result_im);
-			free(og_im->data);
-			free(og_im);
-			fclose(logfile);
-			exit(1);
+	case tst_exposure:
+		eRet = exposure(effect_range, og_im, output);
+		break;
+	case tst_blend:
+		og2_im = test_read(og_2filename, logfile);
+		eRet = blend(effect_range, og_im, og2_im, output);
+		break;
+	case tst_zoom_in:
+		eRet = zoom_in(og_im,output);
+		break;
+	case tst_zoom_out:
+		//eRet = zoom_out(og_im, output);
+		break;
+	case tst_pointilism:
+		eRet = pointilism(og_im, output);
+		break;
+	case tst_swirl:
+		//eRet = swirl(effect_range, og_im, output);
+		break;
+	case tst_blur:
+		//eRet = blur(effect_range, og_im, output);
+		break;
+	default:
+		fprintf(logfile, "project_test.c::test_manip() Unknown command");
+		free(output->data);
+		free(output);
+		free(result_im->data);
+		free(result_im);
+		free(og_im->data);
+		free(og_im);
+		fclose(logfile);
+		exit(1);
 	}
 	
 	FILE *test_file = fopen(output_filename, "wb");

@@ -52,6 +52,11 @@ Image *read_ppm(FILE *fp, Error *error)
 		*error = er_bad_file;
 		return 0;
 	}
+	if (validator_cols < 0 || validator_rows < 0) {
+		free(im);
+		*error = er_bad_file;
+		return 0;
+	}
 	fgetc(fp); // move file by one character to get rid of last new line
 
 	im->rows = validator_rows;

@@ -60,10 +60,10 @@ Error init(Config *config)
 		eRet = exposure(config->effect_range, config->OG_image, output);
 		break;
    case com_blend:
-		//eRet = blend(config->effect_range, config->blend_image, config->OG_image, output);
+		eRet = blend(config->effect_range, config->OG_image, config->blend_image, output);
 		break;
 	case com_zoom_in:
-		//eRet = zoom_in(config->OG_image, output);
+		eRet = zoom_in(config->OG_image, output);
 		break;
 	case com_zoom_out:
 		//eRet = zoom_out(config->OG_image, output);

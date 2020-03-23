@@ -62,6 +62,7 @@ Error blend(float alpha, Image *input1, Image *input2, Image *output)
 	else {
 		free(input2->data);
 		free(input2);
+		input2 = 0;
 		fprintf(stderr, "imageManip.c::blend() output->data realloc failed");
 		return er_other;
 	}
@@ -88,6 +89,7 @@ Error blend(float alpha, Image *input1, Image *input2, Image *output)
 	}
 	free(input2->data);
 	free(input2);
+	input2 = 0;
 	return er_yay;
 }
 
@@ -114,4 +116,25 @@ Error zoom_in(Image *input, Image *output) {
 		}
 	}
 	return er_yay;
+}
+
+
+Error pointilism(Image *input, Image *output) {
+	int num_of_dots = 0.03 * input->rows * input->cols;
+	for (int i = 0; i < num_of_dots; ++i) {
+		int x = rand() % input->cols;
+		int y = rand() % input->rows;
+		int dot_radius = rand() % 5 + 1;
+		for (int r = y - 10; r < y + 10; ++r) {
+			for (int c = x - 10; c < x + 10; ++c) {
+				if ( r >= 0 && r < output->rows && c < output->cols && c >= 0) {
+					if ( (pow((y - r),2) + pow((x - c), 2)) <= pow(dot_radius,2)) {
+						output->data[(r * output->cols) + c] = input->data[(y * input->cols) + x];
+					}
+				}
+			}
+		}
+	}
+
+	return er_yay;	
 }
