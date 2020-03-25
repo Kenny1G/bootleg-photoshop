@@ -14,10 +14,9 @@
 #include <string.h>
 #include <ctype.h>
 
-
 int main(int argc, char **argv)
 {
-	Config config = {0,0,0,0,0,{0,0,0}};
+	Config config = {0, 0, 0, 0, 0, {0, 0, 0}};
 	Error eRet = parse_args(argc, argv, &config);
 	if (eRet != er_yay) {
 		if (config.OG_image != 0) {
@@ -29,8 +28,8 @@ int main(int argc, char **argv)
 		}
 		return handle_error(eRet);
 	}
-    eRet = init(&config);
-    if (eRet != er_yay) {
+	eRet = init(&config);
+	if (eRet != er_yay) {
 		if (config.OG_image != 0) {
 			free(config.OG_image->data);
 			free(config.OG_image);
@@ -38,14 +37,12 @@ int main(int argc, char **argv)
 		if (config.blend_image != 0) {
 			free(config.blend_image);
 		}
-        return handle_error(eRet);
-    }
-	 free(config.OG_image->data);
-	 free(config.OG_image);
-    return 0;
-
+		return handle_error(eRet);
+	}
+	free(config.OG_image->data);
+	free(config.OG_image);
+	return 0;
 }
-
 
 /*Runs the appropriate manipulation function on the image in config and writes new ppm to a file */
 Error init(Config *config)
@@ -59,7 +56,7 @@ Error init(Config *config)
 	case com_exposure:
 		eRet = exposure(config->effect_range, config->OG_image, output);
 		break;
-   case com_blend:
+	case com_blend:
 		eRet = blend(config->effect_range, config->OG_image, config->blend_image, output);
 		break;
 	case com_zoom_in:
@@ -79,7 +76,7 @@ Error init(Config *config)
 		break;
 	default:
 		return er_bad_operation;
-   }
+	}
 	if (eRet != er_yay) {
 		free(output->data);
 		free(output);
@@ -109,15 +106,15 @@ Error parse_args(int argc, char **argv, Config *config)
 	}
 	// read original image
 	FILE *pRet = fopen(argv[1],"rb");
-   if (!pRet) {
-       return er_open_input_file_failed;
-   }
-   Error error;
-   config->OG_image = read_ppm(pRet,&error);
-   if (config->OG_image == 0) {
-       fclose(pRet);
-       return error;
-   }
+	if (!pRet) {
+		 return er_open_input_file_failed;
+	}
+	Error error;
+	config->OG_image = read_ppm(pRet,&error);
+	if (config->OG_image == 0) {
+		 fclose(pRet);
+		 return error;
+	}
 	fclose(pRet);
 
 	//open final file
