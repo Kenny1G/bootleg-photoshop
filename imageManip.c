@@ -81,9 +81,9 @@ Error blend(float alpha, Image *input1, Image *input2, Image *output)
 				int alphag = (alpha * input1->data[(r * input1->cols) + c].g) + ( (1 - alpha) * input2->data[(r * input2->cols) + c].g);
 				int alphab = (alpha * input1->data[(r * input1->cols) + c].b) + ( (1 - alpha) * input2->data[(r * input2->cols) + c].b);
 				Pixel pix = {alphar, alphag, alphab};
-				output->data[(r*output->cols) + c] = pix;
+				output->data[(r  *output->cols) + c] = pix;
 			} else {
-				output->data[(r*output->cols) + c] = black;
+				output->data[(r * output->cols) + c] = black;
 			}
 		}
 	}
@@ -111,7 +111,7 @@ Error zoom_in(Image *input, Image *output) {
 			int oc = c * 2;
 			output->data[( or * output->cols) + oc] = input->data[(r * input->cols) + c];
 			output->data[(or * output->cols) + oc + 1] = input->data[(r * input->cols) + c];
-			output->data[((or+1) * output->cols) + oc ] = input->data[(r * input->cols) + c];
+			output->data[((or + 1) * output->cols) + oc ] = input->data[(r * input->cols) + c];
 			output->data[((or + 1) * output->cols) + oc + 1] = input->data[(r * input->cols) + c];
 		}
 	}
@@ -121,6 +121,35 @@ Error zoom_in(Image *input, Image *output) {
 
 Error zoom_out(Image *input, Image *output)
 {
+	output->rows = input->rows / 2;
+	output->cols = input->cols / 2;
+
+	for (int r = 0; r < output->rows; ++r) {
+		for (int c = 0; c < output->cols; ++c) {
+			int top_row = r + r;
+			int bot_row = top_row + 1;
+			int left_col = c + c;
+			int right_col = left_col + 1;
+
+			int avg_r = input->data[(top_row * input->cols) + left_col].r + 
+							input->data[(top_row * input->cols) + right_col].r + 
+							input->data[(bot_row * input->cols) + left_col].r + 
+							input->data[(bot_row * input->cols) + right_col].r;
+
+			int avg_g = input->data[(top_row * input->cols) + left_col].g + 
+							input->data[(top_row * input->cols) + right_col].g + 
+							input->data[(bot_row * input->cols) + left_col].g + 
+							input->data[(bot_row * input->cols) + right_col].g;
+
+			int avg_b = input->data[(top_row * input->cols) + left_col].b + 
+							input->data[(top_row * input->cols) + right_col].b + 
+							input->data[(bot_row * input->cols) + left_col].b + 
+							input->data[(bot_row * input->cols) + right_col].b;
+
+			Pixel pix = {avg_r/4, avg_g/4, avg_b/4};
+			output->data[(r * output->cols) + c] = pix;
+		}
+	}
 	return er_yay;
 }
 
@@ -141,7 +170,6 @@ Error pointilism(Image *input, Image *output) {
 			}
 		}
 	}
-
 	return er_yay;	
 }
 
@@ -173,6 +201,5 @@ Error swirl(int swirl_args[3], Image *input, Image *output) {
 			}
 		}
 	}
-
 	return er_yay;
 }

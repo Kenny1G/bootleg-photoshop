@@ -66,13 +66,13 @@ Error init(Config *config)
 		eRet = zoom_in(config->OG_image, output);
 		break;
 	case com_zoom_out:
-		//eRet = zoom_out(config->OG_image, output);
+		eRet = zoom_out(config->OG_image, output);
 		break;
 	case com_pointilism:
 		eRet = pointilism(config->OG_image, output);
 		break;
 	case com_swirl:
-		//eRet = swirl(config->swirl_args, config->OG_image, output);
+		eRet = swirl(config->swirl_args, config->OG_image, output);
 		break;
 	case com_blur:
 		//eRet = blur(config->effect_range, config->OG_image, output);

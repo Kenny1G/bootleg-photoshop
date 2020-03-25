@@ -59,7 +59,7 @@ int main()
 
 	// fprintf(logfile, "testing swirl 100 building.ppm:\n");
 	// test_manip(tst_swirl, "data/building.ppm", "", "results/building-swirl-100.ppm", 100, "test/building-swirl-100.ppm", logfile);
-	// fprintf(logfile, "passed \n");
+	// fprintf(logfile, "Passed \n");
 
 	// test_manip(tst_swirl, "data/building.ppm", "", "results/building-swirl-25.ppm", 25, "test/building-swirl-25.ppm", logfile);
 	// fprintf(logfile, "swirl 25 building.ppm: passed \n");
