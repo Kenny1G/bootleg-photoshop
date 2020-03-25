@@ -12,20 +12,17 @@ CFLAGS=-std=c99 -pedantic -Wall -Wextra -g
 #demo_ppm.o: demo_ppm.c ppm_io.h
 #	$(CC) $(CFLAGS) -c demo_ppm.c
 
-project: project.o blur.o imageManip.o ppm_io.o error.o 
-	$(CC) project.o blur.o imageManip.o ppm_io.o error.o -o project -lm
+project: project.o imageManip.o ppm_io.o error.o 
+	$(CC) project.o imageManip.o ppm_io.o error.o -o project -lm
 
-project.o: project.c project.h blur.h imageManip.h ppm_io.h error.h
+project.o: project.c project.h imageManip.h ppm_io.h error.h
 	$(CC) $(CFLAGS) -c project.c
 
-project_test: project_test.o blur.o imageManip.o ppm_io.o error.o
-	$(CC) project_test.o blur.o imageManip.o ppm_io.o error.o -o project_test -lm
+project_test: project_test.o imageManip.o ppm_io.o error.o
+	$(CC) project_test.o imageManip.o ppm_io.o error.o -o project_test -lm
 
-project_test.o: project_test.c project_test.h blur.h imageManip.h ppm_io.h project.h error.h
+project_test.o: project_test.c project_test.h imageManip.h ppm_io.h project.h error.h
 	$(CC) $(CFLAGS) -c project_test.c
-
-blur.o: blur.c blur.h error.h
-	$(CC) $(CFLAGS) -c blur.c
 
 imageManip.o: imageManip.c imageManip.h error.h
 	$(CC) $(CFLAGS) -c imageManip.c

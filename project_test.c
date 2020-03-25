@@ -57,26 +57,28 @@ int main()
 	// test_manip(tst_pointilism, "data/building.ppm", "", "results/building-pointilism.ppm", 0, "test/building-pointilism.ppm", logfile);
 	// fprintf(logfile, "pointilism building.ppm: passed\n");
 
-	fprintf(logfile, "testing swirl 100 building.ppm:\n");
-	test_manip(tst_swirl, "data/building.ppm", "", "results/building-swirl-100.ppm", 100, "test/building-swirl-100.ppm", logfile);
-	fprintf(logfile, "passed \n");
+	// fprintf(logfile, "testing swirl 100 building.ppm:\n");
+	// test_manip(tst_swirl, "data/building.ppm", "", "results/building-swirl-100.ppm", 100, "test/building-swirl-100.ppm", logfile);
+	// fprintf(logfile, "passed \n");
 
-	test_manip(tst_swirl, "data/building.ppm", "", "results/building-swirl-25.ppm", 25, "test/building-swirl-25.ppm", logfile);
-	fprintf(logfile, "swirl 25 building.ppm: passed \n");
+	// test_manip(tst_swirl, "data/building.ppm", "", "results/building-swirl-25.ppm", 25, "test/building-swirl-25.ppm", logfile);
+	// fprintf(logfile, "swirl 25 building.ppm: passed \n");
 
-	test_manip(tst_swirl, "data/building.ppm", "", "results/building-swirl-50.ppm", 50, "test/building-swirl-50.ppm", logfile);
-	fprintf(logfile, "swirl 50 building.ppm: passed \n");
+	// test_manip(tst_swirl, "data/building.ppm", "", "results/building-swirl-50.ppm", 50, "test/building-swirl-50.ppm", logfile);
+	// fprintf(logfile, "swirl 50 building.ppm: passed \n");
 
-	test_manip(tst_swirl, "data/trees.ppm", "", "results/trees-swirl-100.ppm", 100, "test/trees-swirl-100.ppm", logfile);
-	fprintf(logfile, "swirl 100 trees.ppm: passed \n");
+	// test_manip(tst_swirl, "data/trees.ppm", "", "results/trees-swirl-100.ppm", 100, "test/trees-swirl-100.ppm", logfile);
+	// fprintf(logfile, "swirl 100 trees.ppm: passed \n");
 
-	test_manip(tst_swirl, "data/trees.ppm", "", "results/trees-swirl-25.ppm", 25, "test/trees-swirl-25.ppm", logfile);
-	fprintf(logfile, "swirl 25 trees.ppm: passed \n");
+	// test_manip(tst_swirl, "data/trees.ppm", "", "results/trees-swirl-25.ppm", 25, "test/trees-swirl-25.ppm", logfile);
+	// fprintf(logfile, "swirl 25 trees.ppm: passed \n");
 
-	test_manip(tst_swirl, "data/trees.ppm", "", "results/trees-swirl-50.ppm", 50, "test/trees-swirl-50.ppm", logfile);
-	fprintf(logfile, "swirl 50 trees.ppm: passed \n");
+	// test_manip(tst_swirl, "data/trees.ppm", "", "results/trees-swirl-50.ppm", 50, "test/trees-swirl-50.ppm", logfile);
+	// fprintf(logfile, "swirl 50 trees.ppm: passed \n");
 
-	
+	fprintf(logfile, "Testing zoom_out trees.ppm:");
+	test_manip(tst_zoom_out, "data/trees.ppm", "", "results/trees-zoomed-out.ppm", 0, "test/trees-zoomed-out.ppm", logfile);
+	fprintf(logfile, "Passed!\n");
 
 	printf("KAMPAII! All tests passed! \n");
 	fclose(logfile);
@@ -123,7 +125,7 @@ Image *create_image(FILE *logfile)
 void images_equal(Image *actual, Image *read, FILE *logfile)
 {
 	if(actual->rows != read->rows || actual->cols != read->cols) {
-		fprintf(logfile, "Expected | Ours\n");
+		fprintf(logfile, " Failed\nExpected | Ours\n");
 		fprintf(logfile, "%d | %d \n", actual->rows, read->rows); 
 		fprintf(logfile, "%d | %d \n", actual->cols, read->cols);
 		printf("Uh oh, check logfile\n");
@@ -141,7 +143,7 @@ void images_equal(Image *actual, Image *read, FILE *logfile)
 			unsigned char ab = actual->data[(r * actual->cols) + c].b;
 			unsigned char ob = read->data[((r * actual->cols)) + c].b;
 			if (ar != or || ag != og || ab != ob) {
-				fprintf(logfile, "Row: %d |  column: %d\n", r, c);
+				fprintf(logfile, " Failed\nRow: %d |  column: %d\n", r, c);
 				fprintf(logfile, "Expected | Ours\nr: %d | %d\ng: %d | %d\nb: %d | %d", ar, or, ag, og, ab, ob);
 				printf("Uh oh, check logfile\n");
 				fclose(logfile);
@@ -252,7 +254,7 @@ void test_manip(testCommand com, const char *og_filename, const char *og_2filena
 		eRet = zoom_in(og_im,output);
 		break;
 	case tst_zoom_out:
-		//eRet = zoom_out(og_im, output);
+		eRet = zoom_out(og_im, output);
 		break;
 	case tst_pointilism:
 		eRet = pointilism(og_im, output);

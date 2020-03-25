@@ -16,4 +16,5 @@ Error zoom_in(Image *input, Image *output);
 Error zoom_out(Image *input, Image *output);
 Error pointilism(Image *input, Image *output);
 Error swirl(int swirl_args[3], Image *input, Image *output);
+Error blur(float sigma, Image *input, Image *output);
 #endif //imageManip.h

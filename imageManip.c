@@ -119,6 +119,12 @@ Error zoom_in(Image *input, Image *output) {
 }
 
 
+Error zoom_out(Image *input, Image *output)
+{
+	return er_yay;
+}
+
+
 Error pointilism(Image *input, Image *output) {
 	int num_of_dots = 0.03 * input->rows * input->cols;
 	for (int i = 0; i < num_of_dots; ++i) {

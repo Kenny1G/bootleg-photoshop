@@ -9,7 +9,6 @@
 #include "ppm_io.h"
 #include "error.h"
 #include "imageManip.h"
-#include "blur.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
