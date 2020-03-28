@@ -80,6 +80,18 @@ int main()
 	test_manip(tst_zoom_out, "data/trees.ppm", "", "results/trees-zoomed-out.ppm", 0, "test/trees-zoomed-out.ppm", logfile);
 	fprintf(logfile, "Passed!\n");
 
+	fprintf(logfile, "Testing blur 2 building.ppm:");
+	test_manip(tst_blur, "data/building.ppm", "", "results/building-blur-2.ppm", 2, "test/building-blur-2.ppm", logfile);
+	fprintf(logfile, "Passed!\n");
+
+	fprintf(logfile, "Testing blur 5 building.ppm:");
+	test_manip(tst_blur, "data/building.ppm", "", "results/building-blur-5.ppm", 5, "test/building-blur-5.ppm", logfile);
+	fprintf(logfile, "Passed!\n");
+
+	fprintf(logfile, "Testing blur half building.ppm:");
+	test_manip(tst_blur, "data/building.ppm", "", "results/building-blur-half.ppm", 0.5, "test/building-blur-half.ppm", logfile);
+	fprintf(logfile, "Passed!\n");
+
 	printf("KAMPAII! All tests passed! \n");
 	fclose(logfile);
 }
