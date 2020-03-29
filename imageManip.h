@@ -44,5 +44,12 @@ Error pointilism(Image *input, Image *output);
  */
 Error swirl(int swirl_args[3], Image *input, Image *output);
 
+/* Applies a gaussian distribution matrix centered over the pixels of the output Image */
 Error blur(float sigma, Image *input, Image *output);
+
+/* Creates an N x N gaussian distribution matrix with sigma */
+double* create_matrix(int N, float sigma);
+
+/* Applies the gaussian distribution matrix filter on the pixel at row and column col of Image im*/
+Pixel convolve(int N, double *filter, Image *im, int row, int col);
 #endif //imageManip.h

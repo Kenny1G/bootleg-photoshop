@@ -12,6 +12,9 @@
 #include <stdio.h>
 #include <math.h>
 
+#define PI 3.14159265359
+#define sq(n) n*n
+
 
 /* set's the pixels in output->data to 
  * it's current value * 2 raised to the power of expos_val 
@@ -84,11 +87,13 @@ Error blend(float alpha, Image *input1, Image *input2, Image *output)
 				output->data[(r * output->cols) + c] = image_with_bigger_col->data[(r * image_with_bigger_col->cols) + c];
 			}
 			else if (r < image_with_smaller_row->rows && c < image_with_smaller_col->cols) {
-				int alphar = (alpha * input1->data[(r * input1->cols) + c].r) + ( (1 - alpha) * input2->data[(r * input2->cols) + c].r);
-				int alphag = (alpha * input1->data[(r * input1->cols) + c].g) + ( (1 - alpha) * input2->data[(r * input2->cols) + c].g);
-				int alphab = (alpha * input1->data[(r * input1->cols) + c].b) + ( (1 - alpha) * input2->data[(r * input2->cols) + c].b);
-				Pixel pix = {alphar, alphag, alphab};
-				output->data[(r  *output->cols) + c] = pix;
+				Pixel pix1 = input1->data[(r * input1->cols) + c];
+				Pixel pix2 = input2->data[(r * input2->cols) + c];
+				int alphar = (alpha * pix1.r) + ( (1 - alpha) * pix2.r);
+				int alphag = (alpha * pix1.g) + ( (1 - alpha) * pix2.g);
+				int alphab = (alpha * pix1.b) + ( (1 - alpha) * pix2.b);
+				
+				output->data[(r  *output->cols) + c] = (Pixel) {alphar, alphag, alphab};
 			} else {
 				output->data[(r * output->cols) + c] = black;
 			}
@@ -150,20 +155,14 @@ Error zoom_out(Image *input, Image *output)
 			int left_col = c + c;
 			int right_col = left_col + 1;
 
-			int avg_r = input->data[(top_row * input->cols) + left_col].r + 
-							input->data[(top_row * input->cols) + right_col].r + 
-							input->data[(bot_row * input->cols) + left_col].r + 
-							input->data[(bot_row * input->cols) + right_col].r;
+			Pixel top_left = input->data[(top_row * input->cols) + left_col];
+			Pixel top_right = input->data[(top_row * input->cols) + right_col];
+			Pixel bot_left = input->data[(bot_row * input->cols) + left_col];
+			Pixel bot_right = input->data[(bot_row * input->cols) + right_col];
 
-			int avg_g = input->data[(top_row * input->cols) + left_col].g + 
-							input->data[(top_row * input->cols) + right_col].g + 
-							input->data[(bot_row * input->cols) + left_col].g + 
-							input->data[(bot_row * input->cols) + right_col].g;
-
-			int avg_b = input->data[(top_row * input->cols) + left_col].b + 
-							input->data[(top_row * input->cols) + right_col].b + 
-							input->data[(bot_row * input->cols) + left_col].b + 
-							input->data[(bot_row * input->cols) + right_col].b;
+			int avg_r = top_left.r + top_right.r + bot_left.r + bot_right.r;
+			int avg_g = top_left.g + top_right.g + bot_left.g + bot_right.g;
+			int avg_b = top_left.b + top_right.b + bot_left.b + bot_right.b;
 
 			Pixel pix = {avg_r/4, avg_g/4, avg_b/4};
 			output->data[(r * output->cols) + c] = pix;
@@ -183,8 +182,9 @@ Error pointilism(Image *input, Image *output) {
 		int x = rand() % input->cols;
 		int y = rand() % input->rows;
 		int dot_radius = rand() % 5 + 1;
-		for (int r = y - 10; r < y + 10; ++r) {
-			for (int c = x - 10; c < x + 10; ++c) {
+
+		for (int r = y - 15; r < y + 15; ++r) {
+			for (int c = x - 15; c < x + 15; ++c) {
 				if ( r >= 0 && r < output->rows && c < output->cols && c >= 0) {
 					if ( (pow((y - r),2) + pow((x - c), 2)) <= pow(dot_radius,2)) {
 						output->data[(r * output->cols) + c] = output->data[(y * output->cols) + x];
@@ -230,4 +230,72 @@ Error swirl(int swirl_args[3], Image *input, Image *output) {
 		}
 	}
 	return er_yay;
+}
+
+
+Error blur(float sigma, Image *input, Image *output)
+{
+	int N = sigma * 10;
+	if (N % 2 == 0) N++;
+	double *gauss_matrix = create_matrix(N, sigma);
+	for (int r = 0; r < input->rows; ++r) {
+		for (int c = 0; c < input->cols; ++c) {
+			output->data[(r * output->cols) + c] = convolve(N, gauss_matrix, input, r, c);
+		}
+	}
+	return er_yay;
+}
+
+
+double* create_matrix(int N, float sigma)
+{
+  double* matrix = malloc(sizeof(double) * sq(N));
+  int center = (N - 1)/2;
+
+  for (int i = 0; i < N; ++i) {
+    for (int j = 0; j < N; ++j) {
+      int dx = abs(center - j);
+      int dy = abs(center - i);
+      matrix[(i * N) + j] = (1.0 / (2.0 * PI * sq(sigma))) * exp( -(sq(dx) + sq(dy)) / (2 * sq(sigma)));
+    }
+  }
+  return matrix;
+}
+
+
+Pixel convolve(int N, double *filter, Image *im, int row, int col)
+{
+	int center = (N - 1) / 2;
+	double weighted_avg_r = 0;
+	double weighted_avg_g = 0;
+	double weighted_avg_b = 0;
+	double magnitude = 0;
+
+	for (int i = 0; i < N; ++i) {
+		for (int j = 0; j < N; ++j) {
+			int dx = center - j;
+			int dy = center - i;
+			int relative_row = row + dy;
+			int relative_col = col + dx;
+			Pixel pix;
+			if (relative_row >= 0 && relative_row < im->rows && relative_col >= 0 && relative_col < im->cols) {
+				if (dx == 0) {
+					pix = im->data[(relative_row * im->cols) + col];
+				}
+				else if (dy == 0) {
+					pix = im->data[(row * im->cols) + relative_col];
+				}
+				else {
+					pix = im->data[(relative_row * im->cols) + relative_col];
+				}
+				double weight = filter[((center + dy) * N) + (center + dx)];
+				magnitude += weight;
+				weighted_avg_r += pix.r * weight;
+				weighted_avg_g += pix.g * weight;
+				weighted_avg_b += pix.b * weight;
+			}
+		}
+	}
+
+	return (Pixel) {weighted_avg_r / magnitude, weighted_avg_g / magnitude, weighted_avg_b / magnitude};
 }
