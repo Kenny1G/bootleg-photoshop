@@ -243,6 +243,7 @@ Error blur(float sigma, Image *input, Image *output)
 			output->data[(r * output->cols) + c] = convolve(N, gauss_matrix, input, r, c);
 		}
 	}
+	free(gauss_matrix);
 	return er_yay;
 }
 

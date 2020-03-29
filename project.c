@@ -207,7 +207,7 @@ Error parse_args(int argc, char **argv, Config *config)
 		}
 		int i = 0;
 		for (; argv[4][i] != 0; ++i) {
-			if (!isdigit(argv[4][i])) {
+			if (!isdigit(argv[4][i]) && (argv[4][i] != '.')) {
 				return er_args_out_of_range;
 			}
 		}
