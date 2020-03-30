@@ -1,0 +1,58 @@
+Victoria Subritzky Katz vsubrit1
+Kenneth Oseleononmen koseleo1 
+README
+601.220, Spring 2020
+
+
+# Summary
+There are three major parts of the project
+- Error handling
+- Parsing Arguments
+- Image Manipulations 
+
+
+## Error handling
+Most of the error handling takes place in the error.h file that contains an enum for the different errors that can be returned and one function that handles the printing of the appropriate message to stderr.
+All our functions (except those in ppm_io) returned an Error this is so errors are passed back and forth and main knows what to return.
+
+## Parsing User Arguments
+Rather than our entire program living in one big nested if statement, we opted to seperate parsing arguements from the image manipulations. 
+Our parse_args() function populates a struct called config with the various values provided by the user.
+It is inside this function that we read the input image and open the output file for writing later on. We also check for each possible command if the sufficient number of arguments where provided and if the provided arguments are the required type
+
+## Image Manipulation
+Our program makes a copy of the input image and passes the copy and the original to the manipulation function. 
+The manipulation function makes it's changes to the copy, reallocing it when need be.
+
+### Exposure
+Exposure provided no problems, we simply applied the formula to the red green and blue values of every pixel in the input image.
+
+### Blend
+Blend was an interesting one, We had to keep track of the images with bigger rows and columns and used local pointers for that.
+We then realloc output to the bigger row and column.
+Finally using our local pointers, and various conditions we figured out by drawing examples, we set output's data to the appropriate color
+
+### zoom_in & zoom_out
+zoom_in and zoom_out was simply a matter of figuring out indexing that works with loops. We drew tables
+
+### Pointilism
+With poinitilism we reduce our inner loop that searches for pixels that are in the radius so it doesn't run forever.
+
+### swirl
+Swirl was, like exposure, a matter of following the formula with just a little more effort for handling areas that needed to be made black.
+
+### blur 
+Coming soon.
+
+
+## Testing
+We used tested driven design, writing our tests before coding or planning
+luckily testing the image manipulation functions required 0 effort after the first one because we wrote a function that
+reads the result image we were provided
+reads the original image
+applies our function to the original image,
+compares what we read from the result with what our manipulation function produced ot make sure every pixel matches
+writes what our manipulation function produced to a test folder
+
+
+Thank you.
