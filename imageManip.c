@@ -13,7 +13,7 @@
 #include <math.h>
 
 #define PI 3.14159265359
-#define sq(n) n*n
+#define sq(n) n * n
 
 
 /* set's the pixels in output->data to 

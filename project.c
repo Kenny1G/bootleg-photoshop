@@ -72,7 +72,7 @@ Error init(Config *config)
 		eRet = swirl(config->swirl_args, config->OG_image, output);
 		break;
 	case com_blur:
-		//eRet = blur(config->effect_range, config->OG_image, output);
+		eRet = blur(config->effect_range, config->OG_image, output);
 		break;
 	default:
 		return er_bad_operation;
@@ -105,17 +105,17 @@ Error parse_args(int argc, char **argv, Config *config)
 		return er_bad_operation;
 	}
 	// read original image
-	FILE *pRet = fopen(argv[1],"rb");
-	if (!pRet) {
+	FILE *input_fileptr = fopen(argv[1],"rb");
+	if (!input_fileptr) {
 		 return er_open_input_file_failed;
 	}
 	Error error;
-	config->OG_image = read_ppm(pRet,&error);
+	config->OG_image = read_ppm(input_fileptr,&error);
 	if (config->OG_image == 0) {
-		 fclose(pRet);
+		 fclose(input_fileptr);
 		 return error;
 	}
-	fclose(pRet);
+	fclose(input_fileptr);
 
 	//open final file
 	FILE *ofp = fopen(argv[2], "wb");
@@ -134,17 +134,17 @@ Error parse_args(int argc, char **argv, Config *config)
 		}
 		
 		//read additional image for alpha blend
-		pRet = fopen(argv[4], "rb");
-		if (!pRet) {
+		FILE *output_fileptr = fopen(argv[4], "rb");
+		if (!output_fileptr) {
 			return er_open_input_file_failed;
 		}
 		Error error;
-		config->blend_image = read_ppm(pRet, &error);
+		config->blend_image = read_ppm(output_fileptr, &error);
 		if (config->blend_image == 0) {
-			fclose(pRet);
+			fclose(output_fileptr);
 			return error;
 		}
-		fclose(pRet);
+		fclose(output_fileptr);
 
 		config->effect_range = atof(argv[5]);
 		if (config->effect_range < 0 || config->effect_range > 1) {

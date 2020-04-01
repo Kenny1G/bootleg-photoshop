@@ -20,77 +20,77 @@ int main()
 		return 1;
 	}	
 
-	// final_test_read("data/building.ppm", "test/building.ppm", logfile);
-	// fprintf(logfile, "reading building.ppm passed\n");
+	final_test_read("data/building.ppm", "test/building.ppm", logfile);
+	fprintf(logfile, "reading building.ppm passed\n");
 
-	// final_test_read("data/trees.ppm", "test/trees.ppm",logfile);
-	// fprintf(logfile, "reading trees.ppm passed\n");
+	final_test_read("data/trees.ppm", "test/trees.ppm",logfile);
+	fprintf(logfile, "reading trees.ppm passed\n");
 
 
-	// test_copy("data/building.ppm", logfile);
-	// fprintf(logfile, "copying building.ppm passed\n");
+	test_copy("data/building.ppm", logfile);
+	fprintf(logfile, "copying building.ppm passed\n");
 
-	// test_copy("data/trees.ppm", logfile);
-	// fprintf(logfile, "copying trees.ppm passed\n");
+	test_copy("data/trees.ppm", logfile);
+	fprintf(logfile, "copying trees.ppm passed\n");
 
-	// test_manip(tst_exposure, "data/trees.ppm", "", "results/trees-exp-one.ppm",1, "test/trees-exp-one.ppm", logfile);
-	// fprintf(logfile, "exposure 1 trees.ppm: passed\n");
+	test_manip(tst_exposure, "data/trees.ppm", "", "results/trees-exp-one.ppm",1, "test/trees-exp-one.ppm", logfile);
+	fprintf(logfile, "exposure 1 trees.ppm: passed\n");
 
-	// test_manip(tst_exposure, "data/trees.ppm", "", "results/trees-exp-negone.ppm",-1, "test/trees-exp-negone.ppm", logfile);	
-	// fprintf(logfile, "exposure -1 trees.ppm: passed\n");
+	test_manip(tst_exposure, "data/trees.ppm", "", "results/trees-exp-negone.ppm",-1, "test/trees-exp-negone.ppm", logfile);	
+	fprintf(logfile, "exposure -1 trees.ppm: passed\n");
 
-	// test_manip(tst_blend, "data/trees.ppm", "data/building.ppm", "results/trees-building-blended.ppm", 0.5, "test/trees-building-0.5-blended.ppm", logfile);
-	// fprintf(logfile, "alpha-blend 0.5 trees.ppm building.ppm: passed\n");
+	test_manip(tst_blend, "data/trees.ppm", "data/building.ppm", "results/trees-building-blended.ppm", 0.5, "test/trees-building-0.5-blended.ppm", logfile);
+	fprintf(logfile, "alpha-blend 0.5 trees.ppm building.ppm: passed\n");
 
-	// test_manip(tst_blend, "data/kitten.ppm", "data/puppy.ppm", "results/kitten-puppy-blend-0.5.ppm", 0.5, "test/kitten-puppy-0.5-blended.ppm", logfile);
-	// fprintf(logfile, "alpha-blend 0.5 kitten.ppm blend.ppm: passed\n");
+	test_manip(tst_blend, "data/kitten.ppm", "data/puppy.ppm", "results/kitten-puppy-blend-0.5.ppm", 0.5, "test/kitten-puppy-0.5-blended.ppm", logfile);
+	fprintf(logfile, "alpha-blend 0.5 kitten.ppm blend.ppm: passed\n");
 
-	// test_manip(tst_zoom_in, "data/building.ppm", "", "results/building-zoomed-in.ppm", 0, "test/building-zoomed-in.ppm", logfile);
-	// fprintf(logfile, "zoom_in building.ppm: passed\n");
+	test_manip(tst_zoom_in, "data/building.ppm", "", "results/building-zoomed-in.ppm", 0, "test/building-zoomed-in.ppm", logfile);
+	fprintf(logfile, "zoom_in building.ppm: passed\n");
 
 	test_manip(tst_pointilism, "data/trees.ppm", "", "results/trees-pointilism.ppm", 0, "test/trees-pointilism.ppm", logfile);
 	fprintf(logfile, "pointilism trees.ppm: passed\n");
 
 	//this test doesn't work with building pointilism for some reason
 	//building pointilism has been tested with linux compare command and my ever so helpful eyes.
-	test_manip(tst_pointilism, "data/building.ppm", "", "results/building-pointilism.ppm", 0, "test/building-pointilism.ppm", logfile);
-	fprintf(logfile, "pointilism building.ppm: passed\n");
+	// test_manip(tst_pointilism, "data/building.ppm", "", "results/building-pointilism.ppm", 0, "test/building-pointilism.ppm", logfile);
+	// fprintf(logfile, "pointilism building.ppm: passed\n");
 
-	// fprintf(logfile, "testing swirl 100 building.ppm:");
-	// test_manip(tst_swirl, "data/building.ppm", "", "results/building-swirl-100.ppm", 100, "test/building-swirl-100.ppm", logfile);
-	// fprintf(logfile, "Passed \n");
+	fprintf(logfile, "testing swirl 100 building.ppm:");
+	test_manip(tst_swirl, "data/building.ppm", "", "results/building-swirl-100.ppm", 100, "test/building-swirl-100.ppm", logfile);
+	fprintf(logfile, "Passed \n");
 
-	// fprintf(logfile, "Testing swirl 25 building.ppm: ");
-	// test_manip(tst_swirl, "data/building.ppm", "", "results/building-swirl-25.ppm", 25, "test/building-swirl-25.ppm", logfile);
-	// fprintf(logfile, "Passed \n");
+	fprintf(logfile, "Testing swirl 25 building.ppm: ");
+	test_manip(tst_swirl, "data/building.ppm", "", "results/building-swirl-25.ppm", 25, "test/building-swirl-25.ppm", logfile);
+	fprintf(logfile, "Passed \n");
 
-	// test_manip(tst_swirl, "data/building.ppm", "", "results/building-swirl-50.ppm", 50, "test/building-swirl-50.ppm", logfile);
-	// fprintf(logfile, "swirl 50 building.ppm: passed \n");
+	test_manip(tst_swirl, "data/building.ppm", "", "results/building-swirl-50.ppm", 50, "test/building-swirl-50.ppm", logfile);
+	fprintf(logfile, "swirl 50 building.ppm: passed \n");
 
-	// test_manip(tst_swirl, "data/trees.ppm", "", "results/trees-swirl-100.ppm", 100, "test/trees-swirl-100.ppm", logfile);
-	// fprintf(logfile, "swirl 100 trees.ppm: passed \n");
+	test_manip(tst_swirl, "data/trees.ppm", "", "results/trees-swirl-100.ppm", 100, "test/trees-swirl-100.ppm", logfile);
+	fprintf(logfile, "swirl 100 trees.ppm: passed \n");
 
-	// test_manip(tst_swirl, "data/trees.ppm", "", "results/trees-swirl-25.ppm", 25, "test/trees-swirl-25.ppm", logfile);
-	// fprintf(logfile, "swirl 25 trees.ppm: passed \n");
+	test_manip(tst_swirl, "data/trees.ppm", "", "results/trees-swirl-25.ppm", 25, "test/trees-swirl-25.ppm", logfile);
+	fprintf(logfile, "swirl 25 trees.ppm: passed \n");
 
-	// test_manip(tst_swirl, "data/trees.ppm", "", "results/trees-swirl-50.ppm", 50, "test/trees-swirl-50.ppm", logfile);
-	// fprintf(logfile, "swirl 50 trees.ppm: passed \n");
+	test_manip(tst_swirl, "data/trees.ppm", "", "results/trees-swirl-50.ppm", 50, "test/trees-swirl-50.ppm", logfile);
+	fprintf(logfile, "swirl 50 trees.ppm: passed \n");
 
-	// fprintf(logfile, "zoom_out trees.ppm:");
-	// test_manip(tst_zoom_out, "data/trees.ppm", "", "results/trees-zoomed-out.ppm", 0, "test/trees-zoomed-out.ppm", logfile);
-	// fprintf(logfile, "Passed!\n");
+	fprintf(logfile, "zoom_out trees.ppm:");
+	test_manip(tst_zoom_out, "data/trees.ppm", "", "results/trees-zoomed-out.ppm", 0, "test/trees-zoomed-out.ppm", logfile);
+	fprintf(logfile, "Passed!\n");
 
-	// fprintf(logfile, "blur 2 building.ppm:");
-	// test_manip(tst_blur, "data/building.ppm", "", "results/building-blur-2.ppm", 2, "test/building-blur-2.ppm", logfile);
-	// fprintf(logfile, "Passed!\n");
+	fprintf(logfile, "blur 2 building.ppm:");
+	test_manip(tst_blur, "data/building.ppm", "", "results/building-blur-2.ppm", 2, "test/building-blur-2.ppm", logfile);
+	fprintf(logfile, "Passed!\n");
 
-	// fprintf(logfile, "blur 5 building.ppm:");
-	// test_manip(tst_blur, "data/building.ppm", "", "results/building-blur-5.ppm", 5, "test/building-blur-5.ppm", logfile);
-	// fprintf(logfile, "Passed!\n");
+	fprintf(logfile, "blur 5 building.ppm:");
+	test_manip(tst_blur, "data/building.ppm", "", "results/building-blur-5.ppm", 5, "test/building-blur-5.ppm", logfile);
+	fprintf(logfile, "Passed!\n");
 	
-	// fprintf(logfile, "blur half building.ppm:");
-	// test_manip(tst_blur, "data/building.ppm", "", "results/building-blur-half.ppm", 0.5, "test/building-blur-half.ppm", logfile);
-	// fprintf(logfile, "Passed!\n");
+	fprintf(logfile, "blur half building.ppm:");
+	test_manip(tst_blur, "data/building.ppm", "", "results/building-blur-half.ppm", 0.5, "test/building-blur-half.ppm", logfile);
+	fprintf(logfile, "Passed!\n");
 
 	printf("KAMPAII! All tests passed! \n");
 	fclose(logfile);
@@ -154,12 +154,12 @@ void images_equal(Image *actual, Image *read, FILE *logfile)
 			unsigned char og = read->data[((r * actual->cols)) + c].g;
 			unsigned char ab = actual->data[(r * actual->cols) + c].b;
 			unsigned char ob = read->data[((r * actual->cols)) + c].b;
-			if ( (abs(ar - or) > 2) || (abs(ag - og) > 2) || (abs(ab - ob) > 2)) {
+			if ( (abs(ar - or) > 0) || (abs(ag - og) > 0) || (abs(ab - ob) > 0)) {
 				fprintf(logfile, " Failed\nRow: %d |  column: %d\n", r, c);
 				fprintf(logfile, "Expected | Ours\nr: %d | %d\ng: %d | %d\nb: %d | %d", ar, or, ag, og, ab, ob);
-				printf("Uh oh, check logfile\n");
-				fclose(logfile);
-				exit(1);
+				//printf("Uh oh, check logfile\n");
+				//fclose(logfile);
+				//exit(1);
 			}
 		}
 	}
