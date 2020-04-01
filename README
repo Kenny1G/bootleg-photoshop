@@ -12,13 +12,23 @@ There are three major parts of the project
 
 
 ## Error handling
-Most of the error handling takes place in the error.h file that contains an enum for the different errors that can be returned and one function that handles the printing of the appropriate message to stderr.
-All our functions (except those in ppm_io) returned an Error this is so errors are passed back and forth and main knows what to return.
+Most of the error handling takes place in the error.h file that contains an enum for the different errors that can be returned and one function that handles the printing of the appropriat message to stderr.
+All our functions (except those in ppm_io) have a return type Error, this not only allows individual errors to be properly processed, but the program to assess if it should continue to run
+In each function, various checks are run to ascertain if the code is encountering a problem, ie insufficient parameters or one out of range etc, if it fails one of these checks it returns 
+an Error which codes for the specific problem and exits the function. If it successfully passes all these checks without reaching a return statement, then it gets to the end and returns er_yay. Er_yay in the enum codes for zero and shows there is no problem. As the code continues to run in main it checks that the Error returned is equal to zero before continuing.
+
+Benefits
+        -Using an enum to process the errors increases the readability of the code and allows for more errors to be easily added
+        -Each function returning and Error allows for clean error processing that does not overlap and allows the code to stop running as soon as one error is encountered
+        -Uniformity in the error processing system between functions increases understandability and makes future additions easier
 
 ## Parsing User Arguments
-Rather than our entire program living in one big nested if statement, we opted to seperate parsing arguements from the image manipulations. 
-Our parse_args() function populates a struct called config with the various values provided by the user.
-It is inside this function that we read the input image and open the output file for writing later on. We also check for each possible command if the sufficient number of arguments where provided and if the provided arguments are the required type
+The parsing of arguments occurs in a separate function in main before they are passed into imageManip.c 
+Our parse_args() function in main populates a struct called config with the various values provided by the user. This struct holds all the values entered by the user in the main call, allowing each one to be accessed and analyzed separately. The input image is read in and the output file is opened for writing for later. Once the manipulation being run is ascertained, it is checked if the correct number of inputs is present and that they are in the correct range. It also converts them from string to the correct data type. If any of these checks fails and error is returned and the function is exited. 
+
+Benefits 
+	 -Separated the argument processing from image manipulation and thus simplifies imagManip 
+	 -Makes sure everything is in order, both not possessing faults and in the correct form, before trying to manipulate the image, thus protecting the image from corruption 
 
 ## Image Manipulation
 Our program makes a copy of the input image and passes the copy and the original to the manipulation function. 
@@ -54,5 +64,3 @@ applies our function to the original image,
 compares what we read from the result with what our manipulation function produced ot make sure every pixel matches
 writes what our manipulation function produced to a test folder
 
-
-Thank you.
